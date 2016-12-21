@@ -3,3 +3,4 @@
 >###email:rootfuhongzhu@163.com
 
 ##1.绘制棋盘
+##2.绘制棋子

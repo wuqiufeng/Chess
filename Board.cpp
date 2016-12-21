@@ -3,14 +3,21 @@
 
 Board::Board(QWidget *parent) : QWidget(parent)
 {
+    for (int i = 0; i < 32; ++i)
+    {
+        _s[i].init(i);
+    }
+    _selectid = -1;
+    _bRedTurn = true;
 
 }
 
 void Board::paintEvent(QPaintEvent *event)
 {
-    QFont font;
+
     QPainter painter(this);
     int d = 40;
+    _r = d/2;
 
 
     //Draw 10 lines
@@ -37,10 +44,44 @@ void Board::paintEvent(QPaintEvent *event)
     painter.drawLine(QPoint(6*d, 10*d), QPoint(4*d, 8*d));
 
     //楚河汉界
-    font.setPointSize(d/2);
-    painter.setFont(font);
+    painter.setFont(QFont("system", _r, 700));
     QRect ff(d, 5*d, 3.5*d , d);
     painter.drawText(ff, Qt::AlignCenter, "楚河");
     ff.setRect(5.5*d, 5*d, 3.5*d, d);
     painter.drawText(ff, Qt::AlignCenter, "汉界");
+
+    //draw 32 chessmen
+    for (int i = 0; i < 32; ++i)
+    {
+        drawChessmen(painter, i);
+    }
+}
+
+QPoint Board::center(int row, int col)
+{
+    QPoint ret;
+    ret.rx() = (col+1)*_r*2;
+    ret.ry() = (row+1)*_r*2;
+    return ret;
+}
+
+QPoint Board::center(int id)
+{
+    return center(_s[id]._row, _s[id]._col);
+}
+
+void Board::drawChessmen(QPainter& painter, int id)
+{
+
+    QPoint c = center(id);
+    QRect rect = QRect(c.x()-_r, c.y()-_r, _r*2, _r*2);
+
+    painter.setBrush(QBrush(Qt::yellow));
+    painter.setPen(Qt::black);
+
+    painter.drawEllipse(center(id), _r, _r);
+    if (_s[id]._red)
+        painter.setPen(Qt::red);
+    painter.drawText(rect, _s[id].getText(), QTextOption(Qt::AlignCenter));
+
 }

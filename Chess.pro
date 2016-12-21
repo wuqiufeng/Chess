@@ -1,8 +1,10 @@
 SOURCES += \
     main.cpp \
-    Board.cpp
+    Board.cpp \
+    Chessmen.cpp
 
 HEADERS += \
-    Board.h
+    Board.h \
+    Chessmen.h
 
 QT += gui widgets
